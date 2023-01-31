@@ -32,6 +32,8 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       appBar: AppBar(
@@ -45,35 +47,38 @@ class _GameScreenState extends State<GameScreen> {
         centerTitle: true,
         backgroundColor: AppColors.mainColor,
       ),
-      body: SingleChildScrollView(
+      body: Container(
+        height: height - AppBar().preferredSize.height - MediaQuery.of(context).padding.top,
+        width: width,
         padding: const EdgeInsets.all(15),
-
-        // main column
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Wrap(
-              children: _letters.map((letterItem) {
-                return Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Wrap(
+                children: _letters.map((letterItem) {
+                  return Container(
+                    margin: const EdgeInsets.all(5),
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
                     ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      letterItem.letter,
-                      style:
-                          TextStyle(color: AppColors.mainColor, fontSize: 25),
+                    child: Center(
+                      child: Text(
+                        letterItem.letter,
+                        style:
+                            TextStyle(color: AppColors.mainColor, fontSize: 25),
+                      ),
                     ),
-                  ),
-                );
-              }).toList(),
-            )
-          ],
+                  );
+                }).toList(),
+              ),
+              //
+            ],
+          ),
         ),
       ),
     );
