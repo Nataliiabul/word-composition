@@ -28,7 +28,9 @@ class Words with ChangeNotifier {
 
   get startUserWord {
     for (int i = 0; i < word.length; i++) {
-      userLetters.add('-');
+      userLetters.add(
+        LetterItem(letter: '-'),
+      );
     }
     return userLetters;
   }

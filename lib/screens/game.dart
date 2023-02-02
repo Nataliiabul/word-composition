@@ -141,17 +141,47 @@ class _GameScreenState extends State<GameScreen> {
                   _isAccepting = false;
                 },
                 builder: ((context, candidateData, rejectedData) => Container(
-                    width: double.maxFinite,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(10),
+                      width: double.maxFinite,
+                      height: 70,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        color: _isAccepting
+                            ? Colors.grey.withOpacity(0.3)
+                            : Colors.grey,
                       ),
-                      color: _isAccepting
-                          ? Colors.grey.withOpacity(0.3)
-                          : Colors.grey,
-                    ),
-                    child: Container())),
+
+                      // user letters
+                      child: Container(
+                        child: FittedBox(
+                          child: Row(
+                            children: _userLetters.map((userLetterItem) {
+                              return Container(
+                                margin: const EdgeInsets.all(5),
+                                width: 50,
+                                height: 50,
+                                decoration: const BoxDecoration(
+                                  // color: Colors.grey,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    userLetterItem.letter,
+                                    style: TextStyle(
+                                        color: AppColors.mainColor,
+                                        fontSize: 25,
+                                        decoration: TextDecoration.none),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    )),
               ),
               const SizedBox(height: 15),
 
