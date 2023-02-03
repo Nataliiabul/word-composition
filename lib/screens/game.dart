@@ -35,6 +35,8 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final wordsData = Provider.of<Words>(context);
+    _userLetters = wordsData.userLetters;
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       appBar: AppBar(
@@ -132,6 +134,7 @@ class _GameScreenState extends State<GameScreen> {
               DragTarget<LetterItem>(
                 onAccept: (receivedItem) {
                   _isAccepting = false;
+                  wordsData.addLetter(receivedItem.letter);
                 },
                 onWillAccept: (receivedItem) {
                   _isAccepting = true;

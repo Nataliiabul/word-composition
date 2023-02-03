@@ -1,9 +1,7 @@
-import 'dart:isolate';
-
 import 'package:flutter/cupertino.dart';
 
 class LetterItem {
-  final String letter;
+  String letter;
   bool isAccepting;
 
   LetterItem({
@@ -33,5 +31,25 @@ class Words with ChangeNotifier {
       );
     }
     return userLetters;
+  }
+
+  void addLetter(String letter) {
+    int dash = 0;
+    int num = 0;
+    int index = -1;
+    userLetters.forEach((element) {
+      if (element.letter == '-') {
+        dash += 1;
+        if (dash == 1) {
+          // first where
+          index = num;
+        }
+      }
+      num += 1;
+    });
+
+    if (index != -1) {
+      userLetters[index].letter = letter;
+    }
   }
 }
