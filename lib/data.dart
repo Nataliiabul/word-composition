@@ -52,4 +52,21 @@ class Words with ChangeNotifier {
       userLetters[index].letter = letter;
     }
   }
+
+  String userSplitWord() {
+    String splitText = '';
+    userLetters.forEach((element) {
+      splitText += element.letter;
+    });
+    return splitText;
+  }
+
+  bool checkCorrectAnswer() {
+    String userWord = userSplitWord();
+    if (userWord == word) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
