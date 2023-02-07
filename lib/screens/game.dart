@@ -20,9 +20,10 @@ class _GameScreenState extends State<GameScreen> {
 
   initGame() {
     final wordsData = Provider.of<Words>(context, listen: false);
-    _word = wordsData.word;
+    _word = wordsData.correctWord;
     _letters = wordsData.splitWord;
     _userLetters = wordsData.startUserWord;
+    print(_userLetters);
   }
 
   @override
@@ -61,6 +62,7 @@ class _GameScreenState extends State<GameScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // draggable letters
               Wrap(
                 children: _letters.map((letterItem) {
                   return Draggable(
@@ -188,18 +190,47 @@ class _GameScreenState extends State<GameScreen> {
               ),
               const SizedBox(height: 15),
 
-              // check button
+              // buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+
+                  // reset
+                  CircleAvatar(
+                    radius: 23,
+                    backgroundColor: Colors.grey,
+                    child: IconButton(
+                      padding: const EdgeInsets.all(0),
+                      onPressed: () {
+                        setState(() {
+                          initGame();
+                        });
+                      },
+                      icon: Icon(
+                        Icons.restart_alt,
+                        color: Colors.white,
+                        size: 40,
+                      ),
+                      
+                    ),
+                  ),
+                  SizedBox(width: 15),
+
+                  // check
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (wordsData.checkCorrectAnswer()) {
+                        print('true');
+                      } else {
+                        print(false);
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 10,
+                        horizontal: 23,
+                        vertical: 12,
                       ),
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(

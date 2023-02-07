@@ -11,21 +11,24 @@ class LetterItem {
 }
 
 class Words with ChangeNotifier {
-  final String word = 'музыка';
+  final String correctWord = 'музыка';
   List letters = [];
   List userLetters = [];
 
   get splitWord {
-    for (int i = 0; i < word.length; i++) {
+    letters = [];
+    for (int i = 0; i < correctWord.length; i++) {
       letters.add(
-        LetterItem(letter: word[i]),
+        LetterItem(letter: correctWord[i]),
       );
     }
+    letters.shuffle();
     return letters;
   }
 
   get startUserWord {
-    for (int i = 0; i < word.length; i++) {
+    userLetters = [];
+    for (int i = 0; i < correctWord.length; i++) {
       userLetters.add(
         LetterItem(letter: '-'),
       );
@@ -63,7 +66,7 @@ class Words with ChangeNotifier {
 
   bool checkCorrectAnswer() {
     String userWord = userSplitWord();
-    if (userWord == word) {
+    if (userWord == correctWord) {
       return true;
     } else {
       return false;
