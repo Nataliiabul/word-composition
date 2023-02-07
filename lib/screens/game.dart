@@ -32,6 +32,34 @@ class _GameScreenState extends State<GameScreen> {
     initGame();
   }
 
+  // dialog
+  Future<void> _showDialog(bool isCorrect) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: isCorrect ? Text('Правильно') : Text('Неправильно'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children:[
+              isCorrect ? Text('Вы отгадали слово!') : Text('Загадано другое слово') ,
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('ОК'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -219,11 +247,7 @@ class _GameScreenState extends State<GameScreen> {
                   // check
                   ElevatedButton(
                     onPressed: () {
-                      if (wordsData.checkCorrectAnswer()) {
-                        print('true');
-                      } else {
-                        print(false);
-                      }
+                      _showDialog(wordsData.checkCorrectAnswer());
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
