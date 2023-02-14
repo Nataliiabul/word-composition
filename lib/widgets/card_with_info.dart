@@ -7,10 +7,12 @@ class CardWithInfo extends StatelessWidget {
     Key? key,
     required this.width,
     required this.height,
+    required this.function,
   }) : super(key: key);
 
   final double width;
   final double height;
+  final VoidCallback function;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class CardWithInfo extends StatelessWidget {
                 color: AppColors.mainColor,
                 spreadRadius: 2,
                 blurRadius: 5,
-                offset: Offset(0, 3))
+                offset: Offset(3, 4))
           ],
         ),
         child: Column(
@@ -56,7 +58,7 @@ class CardWithInfo extends StatelessWidget {
             ),
             Spacer(),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: function,
               child: Text(
                 "СТАРТ",
                 style: TextStyle(

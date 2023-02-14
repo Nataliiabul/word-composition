@@ -20,7 +20,7 @@ class BgContainer extends StatelessWidget {
       decoration: BoxDecoration(
           gradient: LinearGradient(
         colors: [
-          AppColors.mainColor,
+          AppColors.secondColor,
           AppColors.firstColor,
         ],
         begin: Alignment.bottomCenter,

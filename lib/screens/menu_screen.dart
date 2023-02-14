@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word_composition/screens/game_screen.dart';
 
 import 'package:word_composition/widgets/bg_container.dart';
 import 'package:word_composition/widgets/card_with_info.dart';
@@ -13,10 +14,15 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+
+    void toGame () {
+      Navigator.of(context).pushReplacementNamed(GameScreen.routeName);
+    }
     return Scaffold(
       // main screen container
       body: Container(
@@ -28,7 +34,7 @@ class _MenuScreenState extends State<MenuScreen> {
             BgContainer(width: width, height: height),
 
             // card with information
-            CardWithInfo(width: width, height: height),
+            CardWithInfo(width: width, height: height, function: toGame),
 
             // circle logo
             Positioned(

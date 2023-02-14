@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:word_composition/data.dart';
+import 'package:word_composition/screens/menu_screen.dart';
 import 'package:word_composition/style/colors.dart';
 
 class GameScreen extends StatefulWidget {
@@ -33,33 +34,108 @@ class _GameScreenState extends State<GameScreen> {
     initGame();
   }
 
-  // dialog
-  Future<void> _showDialog(bool isCorrect) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: isCorrect ? const Text('Правильно') : const Text('Неправильно'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children:[
-              isCorrect ? const Text('Вы отгадали слово!') : const Text('Загадано другое слово') ,
-            ],
+  // go home
+  void goHome() {
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => MenuScreen()));
+  }
+
+  // dialog to check word
+  Future<void> _showToHomeDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Выйти из игры?',
+            style: TextStyle(
+              color: AppColors.secondColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('ОК'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                Text(
+                  'Вы уверены, что хотите выйти? Состояние игры не будет сохранено.',
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                    color: AppColors.secondColor,
+                    fontSize: 17,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ],
-      );
-    },
-  );
-}
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'Да',
+                style: TextStyle(
+                  color: AppColors.secondColor,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => MenuScreen()));
+                Navigator.of(context).pop();
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => MenuScreen()));
+              },
+            ),
+            TextButton(
+              child: Text(
+                'Нет',
+                style: TextStyle(
+                  color: AppColors.secondColor,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // dialog to go home
+  Future<void> _showCheckWordDialog(bool isCorrect) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title:
+              isCorrect ? const Text('Правильно') : const Text('Неправильно'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                isCorrect
+                    ? const Text('Вы отгадали слово!')
+                    : const Text('Загадано другое слово'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('ОК'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +143,9 @@ class _GameScreenState extends State<GameScreen> {
     final width = MediaQuery.of(context).size.width;
     final wordsData = Provider.of<Words>(context);
     _userLetters = wordsData.userLetters;
+
     return Scaffold(
-      backgroundColor: AppColors.mainColor,
+      backgroundColor: AppColors.secondColor,
       appBar: AppBar(
         title: const Text(
           'Word Composition',
@@ -78,7 +155,7 @@ class _GameScreenState extends State<GameScreen> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: AppColors.mainColor,
+        backgroundColor: AppColors.secondColor,
       ),
       body: Container(
         height: height -
@@ -91,6 +168,34 @@ class _GameScreenState extends State<GameScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // top row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "1 / 15",
+                    style: TextStyle(
+                        color: AppColors.firstColor,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  CircleAvatar(
+                    radius: 24,
+                    backgroundColor: AppColors.firstColor,
+                    child: IconButton(
+                      padding: const EdgeInsets.all(0),
+                      onPressed: _showToHomeDialog,
+                      icon: Icon(
+                        Icons.home,
+                        color: AppColors.secondColor,
+                        size: 40,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: height * 0.2),
+
               // draggable letters
               Wrap(
                 children: _letters.map((letterItem) {
@@ -100,8 +205,8 @@ class _GameScreenState extends State<GameScreen> {
                       margin: const EdgeInsets.all(5),
                       width: 50,
                       height: 50,
-                      decoration: const BoxDecoration(
-                        color: Colors.grey,
+                      decoration: BoxDecoration(
+                        color: AppColors.firstColor,
                         borderRadius: BorderRadius.all(
                           Radius.circular(10),
                         ),
@@ -110,7 +215,7 @@ class _GameScreenState extends State<GameScreen> {
                         child: Text(
                           letterItem.letter,
                           style: TextStyle(
-                              color: AppColors.mainColor,
+                              color: AppColors.secondColor,
                               fontSize: 25,
                               decoration: TextDecoration.none),
                         ),
@@ -121,7 +226,7 @@ class _GameScreenState extends State<GameScreen> {
                       width: 50,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.3),
+                        color: AppColors.firstColor.withOpacity(0.3),
                         borderRadius: const BorderRadius.all(
                           Radius.circular(10),
                         ),
@@ -130,7 +235,7 @@ class _GameScreenState extends State<GameScreen> {
                         child: Text(
                           letterItem.letter,
                           style: TextStyle(
-                            color: AppColors.mainColor,
+                            color: AppColors.secondColor,
                             fontSize: 25,
                           ),
                         ),
@@ -140,8 +245,8 @@ class _GameScreenState extends State<GameScreen> {
                       margin: const EdgeInsets.all(5),
                       width: 50,
                       height: 50,
-                      decoration: const BoxDecoration(
-                        color: Colors.grey,
+                      decoration: BoxDecoration(
+                        color: AppColors.firstColor,
                         borderRadius: BorderRadius.all(
                           Radius.circular(10),
                         ),
@@ -150,7 +255,7 @@ class _GameScreenState extends State<GameScreen> {
                         child: Text(
                           letterItem.letter,
                           style: TextStyle(
-                            color: AppColors.mainColor,
+                            color: AppColors.secondColor,
                             fontSize: 25,
                           ),
                         ),
@@ -182,8 +287,8 @@ class _GameScreenState extends State<GameScreen> {
                           Radius.circular(10),
                         ),
                         color: _isAccepting
-                            ? Colors.grey.withOpacity(0.3)
-                            : Colors.grey,
+                            ? AppColors.mainColor.withOpacity(0.3)
+                            : AppColors.mainColor,
                       ),
 
                       // user letters
@@ -195,8 +300,8 @@ class _GameScreenState extends State<GameScreen> {
                                 margin: const EdgeInsets.all(5),
                                 width: 50,
                                 height: 50,
-                                decoration: const BoxDecoration(
-                                  // color: Colors.grey,
+                                decoration: BoxDecoration(
+                                  // color: AppColors.firstColor,
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(10),
                                   ),
@@ -205,7 +310,7 @@ class _GameScreenState extends State<GameScreen> {
                                   child: Text(
                                     userLetterItem.letter,
                                     style: TextStyle(
-                                        color: AppColors.mainColor,
+                                        color: AppColors.secondColor,
                                         fontSize: 25,
                                         decoration: TextDecoration.none),
                                   ),
@@ -223,11 +328,10 @@ class _GameScreenState extends State<GameScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-
                   // reset
                   CircleAvatar(
                     radius: 23,
-                    backgroundColor: Colors.grey,
+                    backgroundColor: AppColors.firstColor,
                     child: IconButton(
                       padding: const EdgeInsets.all(0),
                       onPressed: () {
@@ -235,12 +339,11 @@ class _GameScreenState extends State<GameScreen> {
                           initGame();
                         });
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.restart_alt,
-                        color: Colors.white,
+                        color: AppColors.secondColor,
                         size: 40,
                       ),
-                      
                     ),
                   ),
                   const SizedBox(width: 15),
@@ -248,11 +351,11 @@ class _GameScreenState extends State<GameScreen> {
                   // check
                   ElevatedButton(
                     onPressed: () {
-                      _showDialog(wordsData.checkCorrectAnswer());
+                      _showCheckWordDialog(wordsData.checkCorrectAnswer());
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor: Colors.white,
+                      backgroundColor: AppColors.firstColor,
+                      foregroundColor: AppColors.secondColor,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 23,
                         vertical: 12,
