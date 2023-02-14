@@ -17,12 +17,10 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   List _letters = [];
   List _userLetters = [];
-  String _word = '';
   bool _isAccepting = false;
 
   initGame() {
     final wordsData = Provider.of<Words>(context, listen: false);
-    _word = wordsData.correctWord;
     _letters = wordsData.splitWord;
     _userLetters = wordsData.startUserWord;
     print(_userLetters);
@@ -173,7 +171,7 @@ class _GameScreenState extends State<GameScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "1 / 15",
+                    "${wordsData.currentNumberWord.toString()} / ${wordsData.countWords.toString()}",
                     style: TextStyle(
                         color: AppColors.firstColor,
                         fontSize: 25,
