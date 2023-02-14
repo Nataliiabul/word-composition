@@ -6,6 +6,7 @@ import 'package:word_composition/data.dart';
 import 'package:word_composition/style/colors.dart';
 
 class GameScreen extends StatefulWidget {
+  static const routeName = '/game';
   GameScreen({super.key});
 
   @override
