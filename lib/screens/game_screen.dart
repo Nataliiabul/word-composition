@@ -39,11 +39,11 @@ class _GameScreenState extends State<GameScreen> {
     barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: isCorrect ? Text('Правильно') : Text('Неправильно'),
+        title: isCorrect ? const Text('Правильно') : const Text('Неправильно'),
         content: SingleChildScrollView(
           child: ListBody(
             children:[
-              isCorrect ? Text('Вы отгадали слово!') : Text('Загадано другое слово') ,
+              isCorrect ? const Text('Вы отгадали слово!') : const Text('Загадано другое слово') ,
             ],
           ),
         ),
@@ -234,7 +234,7 @@ class _GameScreenState extends State<GameScreen> {
                           initGame();
                         });
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.restart_alt,
                         color: Colors.white,
                         size: 40,
@@ -242,7 +242,7 @@ class _GameScreenState extends State<GameScreen> {
                       
                     ),
                   ),
-                  SizedBox(width: 15),
+                  const SizedBox(width: 15),
 
                   // check
                   ElevatedButton(

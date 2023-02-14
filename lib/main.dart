@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:word_composition/data.dart';
-import 'package:word_composition/screens/game.dart';
+import 'package:word_composition/screens/game_screen.dart';
+import 'package:word_composition/screens/menu_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.grey,
         ),
-        home: GameScreen(),
+        home: MenuScreen(),
       ),
     );
   }
