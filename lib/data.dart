@@ -12,7 +12,7 @@ class LetterItem {
 
 class Words with ChangeNotifier {
   int currentIndex = 0;
-  List words = ['музыка', 'радуга'];
+  List words = ['музыка', 'котик'];
   // final String correctWord = 'музыка';
   List letters = [];
   List userLetters = [];
@@ -50,6 +50,18 @@ class Words with ChangeNotifier {
     return userLetters;
   }
 
+  void updateCurrentIndex() {
+    currentIndex += 1;
+  }
+
+  bool canUpdateCurrentIndex() {
+    if (currentIndex+1 == words.length) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   void addLetter(String letter) {
     int dash = 0;
     int num = 0;
@@ -85,5 +97,9 @@ class Words with ChangeNotifier {
     } else {
       return false;
     }
+  }
+
+  void clearData() {
+    currentIndex = 0;
   }
 }
