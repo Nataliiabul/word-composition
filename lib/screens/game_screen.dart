@@ -76,7 +76,6 @@ class _GameScreenState extends State<GameScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              
               onPressed: () {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => MenuScreen()));
@@ -249,69 +248,99 @@ class _GameScreenState extends State<GameScreen> {
               // draggable letters
               Wrap(
                 children: _letters.map((letterItem) {
-                  return Draggable(
-                    data: letterItem,
-                    feedback: Container(
-                      margin: const EdgeInsets.all(5),
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: AppColors.firstColor,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
+                  return
+                  Column(
+                    children: [
+                      if (!letterItem.isAccepted) Draggable(
+                        data: letterItem,
+                      
+                        feedback: Container(
+                          margin: const EdgeInsets.all(5),
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: AppColors.firstColor,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              letterItem.letter,
+                              style: TextStyle(
+                                  color: AppColors.secondColor,
+                                  fontSize: 25,
+                                  decoration: TextDecoration.none),
+                            ),
+                          ),
                         ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          letterItem.letter,
-                          style: TextStyle(
-                              color: AppColors.secondColor,
-                              fontSize: 25,
-                              decoration: TextDecoration.none),
+                        childWhenDragging: Container(
+                          margin: const EdgeInsets.all(5),
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: AppColors.firstColor.withOpacity(0.3),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          
+                          child: Center(
+                            child: Text(
+                              letterItem.letter,
+                              style: TextStyle(
+                                color: AppColors.secondColor,
+                                fontSize: 25,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    childWhenDragging: Container(
-                      margin: const EdgeInsets.all(5),
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: AppColors.firstColor.withOpacity(0.3),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          letterItem.letter,
-                          style: TextStyle(
-                            color: AppColors.secondColor,
-                            fontSize: 25,
+                        child: Container(
+                          margin: const EdgeInsets.all(5),
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: AppColors.firstColor,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              letterItem.letter,
+                              style: TextStyle(
+                                color: AppColors.secondColor,
+                                fontSize: 25,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    child: Container(
-                      margin: const EdgeInsets.all(5),
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: AppColors.firstColor,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          letterItem.letter,
-                          style: TextStyle(
+
+                      if (letterItem.isAccepted) 
+                      Container(
+                          margin: const EdgeInsets.all(5),
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
                             color: AppColors.secondColor,
-                            fontSize: 25,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              letterItem.letter,
+                              style: TextStyle(
+                                  color: AppColors.firstColor,
+                                  fontSize: 25,
+                                  decoration: TextDecoration.none),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
+                    ],
                   );
+                  
                 }).toList(),
               ),
               const SizedBox(height: 15),
@@ -321,13 +350,21 @@ class _GameScreenState extends State<GameScreen> {
                 onAccept: (receivedItem) {
                   _isAccepting = false;
                   wordsData.addLetter(receivedItem.letter);
+
+                  setState(() {
+                    receivedItem.isAccepted = true;
+                  });
+                  
+                 
                 },
                 onWillAccept: (receivedItem) {
                   _isAccepting = true;
+                
                   return true;
                 },
                 onLeave: (receivedItem) {
                   _isAccepting = false;
+            
                 },
                 builder: ((context, candidateData, rejectedData) => Container(
                       width: double.maxFinite,
@@ -401,25 +438,19 @@ class _GameScreenState extends State<GameScreen> {
                   // check
                   ElevatedButton(
                     onPressed: () {
-             
                       _showCheckWordDialog(wordsData.checkCorrectAnswer());
                       if (wordsData.checkCorrectAnswer()) {
                         // next word
-                        if(wordsData.canUpdateCurrentIndex()) {
+                        if (wordsData.canUpdateCurrentIndex()) {
                           setState(() {
                             wordsData.updateCurrentIndex();
                             initGame();
                           });
-                     
-                          
                         } else {
                           // all words are guessed
                           _showWinDialog();
                           wordsData.clearData();
                         }
-                
-                      } else {
-                        print('no');
                       }
                     },
                     style: ElevatedButton.styleFrom(

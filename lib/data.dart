@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 
 class LetterItem {
   String letter;
-  bool isAccepting;
+  bool isAccepted;
 
   LetterItem({
     required this.letter,
-    this.isAccepting = false,
+    this.isAccepted = false,
   });
 }
 
