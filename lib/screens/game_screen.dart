@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:word_composition/data.dart';
 import 'package:word_composition/screens/menu_screen.dart';
 import 'package:word_composition/style/colors.dart';
+import 'package:word_composition/widgets/letter_container.dart';
 
 class GameScreen extends StatefulWidget {
   static const routeName = '/game';
@@ -148,7 +149,7 @@ class _GameScreenState extends State<GameScreen> {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => MenuScreen()));
-                Provider.of<Words>(context).clearData();
+                Provider.of<Words>(context, listen: false).clearData();
               },
             ),
           ],
@@ -256,89 +257,30 @@ class _GameScreenState extends State<GameScreen> {
                       if (!letterItem.isAccepted)
                         Draggable(
                           data: letterItem,
-                          feedback: Container(
-                            margin: const EdgeInsets.all(5),
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: AppColors.firstColor,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                letterItem.letter,
-                                style: TextStyle(
-                                    color: AppColors.secondColor,
-                                    fontSize: 25,
-                                    decoration: TextDecoration.none),
-                              ),
-                            ),
+                          feedback: LetterContainer(
+                            letter: letterItem.letter,
+                            letterColor: AppColors.secondColor,
+                            backgroundColor: AppColors.firstColor,
                           ),
-                          childWhenDragging: Container(
-                            margin: const EdgeInsets.all(5),
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: AppColors.firstColor.withOpacity(0.3),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                letterItem.letter,
-                                style: TextStyle(
-                                  color: AppColors.secondColor,
-                                  fontSize: 25,
-                                ),
-                              ),
-                            ),
+                          childWhenDragging: LetterContainer(
+                            letter: letterItem.letter,
+                            letterColor: AppColors.secondColor,
+                            backgroundColor:
+                                AppColors.firstColor.withOpacity(0.3),
                           ),
-                          child: Container(
-                            margin: const EdgeInsets.all(5),
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: AppColors.firstColor,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                letterItem.letter,
-                                style: TextStyle(
-                                  color: AppColors.secondColor,
-                                  fontSize: 25,
-                                ),
-                              ),
-                            ),
+                          child: LetterContainer(
+                            letter: letterItem.letter,
+                            letterColor: AppColors.secondColor,
+                            backgroundColor: AppColors.firstColor,
                           ),
                         ),
 
                       // can not drag
                       if (letterItem.isAccepted)
-                        Container(
-                          margin: const EdgeInsets.all(5),
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: AppColors.secondColor,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              letterItem.letter,
-                              style: TextStyle(
-                                  color: AppColors.firstColor,
-                                  fontSize: 25,
-                                  decoration: TextDecoration.none),
-                            ),
-                          ),
+                        LetterContainer(
+                          backgroundColor: AppColors.secondColor,
+                          letterColor: AppColors.firstColor,
+                          letter: letterItem.letter,
                         ),
                     ],
                   );
@@ -381,25 +323,10 @@ class _GameScreenState extends State<GameScreen> {
                         child: FittedBox(
                           child: Row(
                             children: _userLetters.map((userLetterItem) {
-                              return Container(
-                                margin: const EdgeInsets.all(5),
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  // color: AppColors.firstColor,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    userLetterItem.letter,
-                                    style: TextStyle(
-                                        color: AppColors.secondColor,
-                                        fontSize: 25,
-                                        decoration: TextDecoration.none),
-                                  ),
-                                ),
+                              return LetterContainer(
+                                backgroundColor: Colors.transparent,
+                                letterColor: AppColors.secondColor,
+                                letter: userLetterItem.letter,
                               );
                             }).toList(),
                           ),
