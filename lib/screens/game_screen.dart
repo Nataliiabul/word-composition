@@ -27,8 +27,10 @@ class _GameScreenState extends State<GameScreen> {
   late SMITrigger check;
   late SMITrigger error;
   late SMITrigger reset;
+  late SMITrigger confetti;
 
   bool isShowLoading = false;
+  bool isShowConfetti = false;
 
   StateMachineController getRiveController(Artboard artboard) {
     StateMachineController? controller =
@@ -255,7 +257,11 @@ class _GameScreenState extends State<GameScreen> {
                                       });
                                     } else {
                                       // all words are guessed
-                                      showWinDialog(context);
+                                      setState(() {
+                                        isShowConfetti = true;
+                                      });
+                                      confetti.fire();
+                                      // showWinDialog(context);
                                     }
                                   });
                                 });
@@ -328,6 +334,31 @@ class _GameScreenState extends State<GameScreen> {
                       ),
                     )
                   : SizedBox(),
+
+                  // confetti
+                  isShowConfetti ? Positioned.fill(
+                      child: Column(
+                        children: [
+                          Spacer(flex: 3),
+                          SizedBox(
+                            height: 120,
+                            width: 120,
+                            child: Transform.scale(
+                              scale: 6,
+                              child: RiveAnimation.asset(
+                                "assets/animation/confetti.riv",
+                                onInit: (artboard) {
+                                  StateMachineController controller =
+                                      getRiveController(artboard);
+                                  confetti = controller.findSMI("Trigger explosion") as SMITrigger;
+                                },
+                              ),
+                            ),
+                          ),
+                          Spacer(flex: 1),
+                        ],
+                      ),
+                    ): SizedBox(),
             ],
           ),
         ),

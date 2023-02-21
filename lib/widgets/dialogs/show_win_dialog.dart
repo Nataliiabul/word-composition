@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:rive/rive.dart';
 
 import 'package:word_composition/data.dart';
 import 'package:word_composition/screens/menu_screen.dart';
 import 'package:word_composition/style/colors.dart';
 
 Future<Object?> showWinDialog(BuildContext context) {
+
   return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -14,6 +16,7 @@ Future<Object?> showWinDialog(BuildContext context) {
         return AlertDialog(
           title: Text(
             'Победа',
+            textAlign: TextAlign.center,
             style: TextStyle(
               color: AppColors.secondColor,
               fontSize: 20,
@@ -31,6 +34,7 @@ Future<Object?> showWinDialog(BuildContext context) {
                     fontSize: 17,
                   ),
                 ),
+                
               ],
             ),
           ),
@@ -38,6 +42,7 @@ Future<Object?> showWinDialog(BuildContext context) {
             TextButton(
               child: Text(
                 'В главное меню',
+                
                 style: TextStyle(
                   color: AppColors.secondColor,
                   fontSize: 17,
