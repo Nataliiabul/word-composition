@@ -45,7 +45,7 @@ Future<Object?> showWinDialog(BuildContext context) {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                
                 Navigator.of(context).pop();
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => MenuScreen()));

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-// import 'package:rive/rive.dart';
+import 'package:rive/rive.dart';
 
 import 'package:word_composition/data.dart';
 import 'package:word_composition/screens/menu_screen.dart';
@@ -24,17 +24,18 @@ class _GameScreenState extends State<GameScreen> {
   List _userLetters = [];
   bool _isAccepting = false;
 
-  // late SMITrigger check;
-  // late SMITrigger error;
-  // late SMITrigger reset;
+  late SMITrigger check;
+  late SMITrigger error;
+  late SMITrigger reset;
 
-  // bool isShowLoading = false;
+  bool isShowLoading = false;
 
-  // StateMachineController getRiveController(Artboard artboard) {
-  //   StateMachineController? controller = StateMachineController.fromArtboard(artboard, "State Machine 1");
-  //   artboard.addController(controller!);
-  //   return controller;
-  // }
+  StateMachineController getRiveController(Artboard artboard) {
+    StateMachineController? controller =
+        StateMachineController.fromArtboard(artboard, "State Machine 1");
+    artboard.addController(controller!);
+    return controller;
+  }
 
   initGame() {
     final wordsData = Provider.of<Words>(context, listen: false);
@@ -104,7 +105,7 @@ class _GameScreenState extends State<GameScreen> {
                         backgroundColor: AppColors.firstColor,
                         child: IconButton(
                           padding: const EdgeInsets.all(0),
-                          onPressed: (){
+                          onPressed: () {
                             showToHomeDialog(context);
                           },
                           icon: Icon(
@@ -234,19 +235,46 @@ class _GameScreenState extends State<GameScreen> {
                       // check
                       ElevatedButton(
                         onPressed: () {
-                          showCheckWordDialog(context, wordsData.checkCorrectAnswer());
-                          if (wordsData.checkCorrectAnswer()) {
-                            // next word
-                            if (wordsData.canUpdateCurrentIndex()) {
-                              setState(() {
-                                wordsData.updateCurrentIndex();
-                                initGame();
-                              });
-                            } else {
-                              // all words are guessed
-                              showWinDialog(context);
-                            }
-                          }
+                          setState(() {
+                            isShowLoading = true;
+                          });
+                          Future.delayed(
+                            Duration(seconds: 1),
+                            () {
+                              if (wordsData.checkCorrectAnswer()) {
+                                check.fire();
+                                Future.delayed(Duration(seconds: 2), () {
+                                  setState(() {
+                                    isShowLoading = false;
+
+                                    // next word
+                                    if (wordsData.canUpdateCurrentIndex()) {
+                                      setState(() {
+                                        wordsData.updateCurrentIndex();
+                                        initGame();
+                                      });
+                                    } else {
+                                      // all words are guessed
+                                      showWinDialog(context);
+                                    }
+                                  });
+                                });
+                              } else {
+                                error.fire();
+                                Future.delayed(
+                                  Duration(seconds: 2),
+                                  () {
+                                    setState(
+                                      () {
+                                        isShowLoading = false;
+                                      },
+                                    );
+                                  },
+                                );
+                              }
+                            },
+                          );
+                          // showCheckWordDialog(context, wordsData.checkCorrectAnswer());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.firstColor,
@@ -273,15 +301,33 @@ class _GameScreenState extends State<GameScreen> {
                   ),
                 ],
               ),
-              // Positioned.fill(
-              //   child: RiveAnimation.asset("assets/animation/check.riv",
-              //   onInit: (artboard) {
-              //     StateMachineController controller = getRiveController(artboard);
-              //     check = controller.findSMI("Check") as SMITrigger;
-              //     error = controller.findSMI("Error") as SMITrigger;
-              //     reset = controller.findSMI("Reset") as SMITrigger;
-              //   },),
-              // ),
+              isShowLoading
+                  ? Positioned.fill(
+                      child: Column(
+                        children: [
+                          Spacer(flex: 3),
+                          SizedBox(
+                            height: 120,
+                            width: 120,
+                            child: RiveAnimation.asset(
+                              "assets/animation/check.riv",
+                              onInit: (artboard) {
+                                StateMachineController controller =
+                                    getRiveController(artboard);
+                                check =
+                                    controller.findSMI("Check") as SMITrigger;
+                                error =
+                                    controller.findSMI("Error") as SMITrigger;
+                                reset =
+                                    controller.findSMI("Reset") as SMITrigger;
+                              },
+                            ),
+                          ),
+                          Spacer(flex: 1),
+                        ],
+                      ),
+                    )
+                  : SizedBox(),
             ],
           ),
         ),
