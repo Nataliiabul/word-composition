@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class LetterItem {
   String letter;
@@ -12,7 +12,7 @@ class LetterItem {
 
 class Words with ChangeNotifier {
   int currentIndex = 0;
-  List words = ['музыка', 'котик'];
+  List words = ['музыка', 'котик', 'радуга'];
   // final String correctWord = 'музыка';
   List letters = [];
   List userLetters = [];

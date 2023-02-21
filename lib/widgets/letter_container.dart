@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:word_composition/style/colors.dart';
 
 class LetterContainer extends StatelessWidget {
   final Color backgroundColor;
@@ -15,23 +14,24 @@ class LetterContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.all(5),
-        width: 50,
-        height: 50,
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
+      margin: const EdgeInsets.all(5),
+      width: 50,
+      height: 50,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(10),
         ),
-        child: Center(
-          child: Text(
-            letter,
-            style: TextStyle(
-                color: letterColor,
-                fontSize: 25,
-                decoration: TextDecoration.none),
-          ),
-        ));
+      ),
+      child: Center(
+        child: Text(
+          letter,
+          style: TextStyle(
+              color: letterColor,
+              fontSize: 25,
+              decoration: TextDecoration.none),
+        ),
+      ),
+    );
   }
 }

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+// import 'package:rive/rive.dart';
 
 import 'package:word_composition/data.dart';
 import 'package:word_composition/screens/menu_screen.dart';
 import 'package:word_composition/style/colors.dart';
+import 'package:word_composition/widgets/dialogs/show_check_word_dialog.dart';
+import 'package:word_composition/widgets/dialogs/show_to_home_dialog.dart';
+import 'package:word_composition/widgets/dialogs/show_win_dialog.dart';
 import 'package:word_composition/widgets/letter_container.dart';
 
 class GameScreen extends StatefulWidget {
@@ -19,6 +23,18 @@ class _GameScreenState extends State<GameScreen> {
   List _letters = [];
   List _userLetters = [];
   bool _isAccepting = false;
+
+  // late SMITrigger check;
+  // late SMITrigger error;
+  // late SMITrigger reset;
+
+  // bool isShowLoading = false;
+
+  // StateMachineController getRiveController(Artboard artboard) {
+  //   StateMachineController? controller = StateMachineController.fromArtboard(artboard, "State Machine 1");
+  //   artboard.addController(controller!);
+  //   return controller;
+  // }
 
   initGame() {
     final wordsData = Provider.of<Words>(context, listen: false);
@@ -36,157 +52,6 @@ class _GameScreenState extends State<GameScreen> {
   void goHome() {
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (context) => MenuScreen()));
-  }
-
-  // dialog to check word
-  Future<void> _showToHomeDialog() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'Выйти из игры?',
-            style: TextStyle(
-              color: AppColors.secondColor,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                Text(
-                  'Вы уверены, что хотите выйти? Состояние игры не будет сохранено.',
-                  textAlign: TextAlign.justify,
-                  style: TextStyle(
-                    color: AppColors.secondColor,
-                    fontSize: 17,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(
-                'Да',
-                style: TextStyle(
-                  color: AppColors.secondColor,
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => MenuScreen()));
-                Navigator.of(context).pop();
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => MenuScreen()));
-                Provider.of<Words>(context, listen: false).clearData();
-              },
-            ),
-            TextButton(
-              child: Text(
-                'Нет',
-                style: TextStyle(
-                  color: AppColors.secondColor,
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // all words are guessed
-  Future<void> _showWinDialog() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'Победа',
-            style: TextStyle(
-              color: AppColors.secondColor,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                Text(
-                  'Поздравляем! Вы отгадали все слова!',
-                  textAlign: TextAlign.justify,
-                  style: TextStyle(
-                    color: AppColors.secondColor,
-                    fontSize: 17,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(
-                'В главное меню',
-                style: TextStyle(
-                  color: AppColors.secondColor,
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => MenuScreen()));
-                Provider.of<Words>(context, listen: false).clearData();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // dialog to go home
-  Future<void> _showCheckWordDialog(bool isCorrect) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title:
-              isCorrect ? const Text('Правильно') : const Text('Неправильно'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                isCorrect
-                    ? const Text('Вы отгадали слово!')
-                    : const Text('Загадано другое слово'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('ОК'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -216,190 +81,207 @@ class _GameScreenState extends State<GameScreen> {
         width: width,
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(
-          // main column
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          // main
+          child: Stack(
             children: [
-              // top row
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // main column
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    "${wordsData.currentNumberWord.toString()} / ${wordsData.countWords.toString()}",
-                    style: TextStyle(
-                        color: AppColors.firstColor,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  CircleAvatar(
-                    radius: 24,
-                    backgroundColor: AppColors.firstColor,
-                    child: IconButton(
-                      padding: const EdgeInsets.all(0),
-                      onPressed: _showToHomeDialog,
-                      icon: Icon(
-                        Icons.home,
-                        color: AppColors.secondColor,
-                        size: 40,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: height * 0.2),
-
-              // draggable letters
-              Wrap(
-                children: _letters.map((letterItem) {
-                  return Column(
+                  // top row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // can drag
-                      if (!letterItem.isAccepted)
-                        Draggable(
-                          data: letterItem,
-                          feedback: LetterContainer(
-                            letter: letterItem.letter,
-                            letterColor: AppColors.secondColor,
-                            backgroundColor: AppColors.firstColor,
-                          ),
-                          childWhenDragging: LetterContainer(
-                            letter: letterItem.letter,
-                            letterColor: AppColors.secondColor,
-                            backgroundColor:
-                                AppColors.firstColor.withOpacity(0.3),
-                          ),
-                          child: LetterContainer(
-                            letter: letterItem.letter,
-                            letterColor: AppColors.secondColor,
-                            backgroundColor: AppColors.firstColor,
+                      Text(
+                        "${wordsData.currentNumberWord.toString()} / ${wordsData.countWords.toString()}",
+                        style: TextStyle(
+                            color: AppColors.firstColor,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      CircleAvatar(
+                        radius: 24,
+                        backgroundColor: AppColors.firstColor,
+                        child: IconButton(
+                          padding: const EdgeInsets.all(0),
+                          onPressed: (){
+                            showToHomeDialog(context);
+                          },
+                          icon: Icon(
+                            Icons.home,
+                            color: AppColors.secondColor,
+                            size: 40,
                           ),
                         ),
-
-                      // can not drag
-                      if (letterItem.isAccepted)
-                        LetterContainer(
-                          backgroundColor: AppColors.secondColor,
-                          letterColor: AppColors.firstColor,
-                          letter: letterItem.letter,
-                        ),
+                      ),
                     ],
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 15),
+                  ),
+                  SizedBox(height: height * 0.2),
 
-              // receive container
-              DragTarget<LetterItem>(
-                onAccept: (receivedItem) {
-                  _isAccepting = false;
-                  wordsData.addLetter(receivedItem.letter);
-
-                  setState(() {
-                    receivedItem.isAccepted = true;
-                  });
-                },
-                onWillAccept: (receivedItem) {
-                  _isAccepting = true;
-
-                  return true;
-                },
-                onLeave: (receivedItem) {
-                  _isAccepting = false;
-                },
-                builder: ((context, candidateData, rejectedData) => Container(
-                      width: double.maxFinite,
-                      height: 70,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                        color: _isAccepting
-                            ? AppColors.mainColor.withOpacity(0.3)
-                            : AppColors.mainColor,
-                      ),
-
-                      // user letters
-                      child: Container(
-                        child: FittedBox(
-                          child: Row(
-                            children: _userLetters.map((userLetterItem) {
-                              return LetterContainer(
-                                backgroundColor: Colors.transparent,
+                  // draggable letters
+                  Wrap(
+                    children: _letters.map((letterItem) {
+                      return Column(
+                        children: [
+                          // can drag
+                          if (!letterItem.isAccepted)
+                            Draggable(
+                              data: letterItem,
+                              feedback: LetterContainer(
+                                letter: letterItem.letter,
                                 letterColor: AppColors.secondColor,
-                                letter: userLetterItem.letter,
-                              );
-                            }).toList(),
+                                backgroundColor: AppColors.firstColor,
+                              ),
+                              childWhenDragging: LetterContainer(
+                                letter: letterItem.letter,
+                                letterColor: AppColors.secondColor,
+                                backgroundColor:
+                                    AppColors.firstColor.withOpacity(0.3),
+                              ),
+                              child: LetterContainer(
+                                letter: letterItem.letter,
+                                letterColor: AppColors.secondColor,
+                                backgroundColor: AppColors.firstColor,
+                              ),
+                            ),
+
+                          // can not drag
+                          if (letterItem.isAccepted)
+                            LetterContainer(
+                              backgroundColor: AppColors.secondColor,
+                              letterColor: AppColors.firstColor,
+                              letter: letterItem.letter,
+                            ),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 15),
+
+                  // receive container
+                  DragTarget<LetterItem>(
+                    onAccept: (receivedItem) {
+                      _isAccepting = false;
+                      wordsData.addLetter(receivedItem.letter);
+
+                      setState(() {
+                        receivedItem.isAccepted = true;
+                      });
+                    },
+                    onWillAccept: (receivedItem) {
+                      _isAccepting = true;
+
+                      return true;
+                    },
+                    onLeave: (receivedItem) {
+                      _isAccepting = false;
+                    },
+                    builder: ((context, candidateData, rejectedData) =>
+                        Container(
+                          width: double.maxFinite,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                            color: _isAccepting
+                                ? AppColors.mainColor.withOpacity(0.3)
+                                : AppColors.mainColor,
+                          ),
+
+                          // user letters
+                          child: Container(
+                            child: FittedBox(
+                              child: Row(
+                                children: _userLetters.map((userLetterItem) {
+                                  return LetterContainer(
+                                    backgroundColor: Colors.transparent,
+                                    letterColor: AppColors.secondColor,
+                                    letter: userLetterItem.letter,
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+                        )),
+                  ),
+                  const SizedBox(height: 15),
+
+                  // buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      // reset
+                      CircleAvatar(
+                        radius: 23,
+                        backgroundColor: AppColors.firstColor,
+                        child: IconButton(
+                          padding: const EdgeInsets.all(0),
+                          onPressed: () {
+                            setState(() {
+                              initGame();
+                            });
+                          },
+                          icon: Icon(
+                            Icons.restart_alt,
+                            color: AppColors.secondColor,
+                            size: 40,
                           ),
                         ),
                       ),
-                    )),
-              ),
-              const SizedBox(height: 15),
+                      const SizedBox(width: 15),
 
-              // buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  // reset
-                  CircleAvatar(
-                    radius: 23,
-                    backgroundColor: AppColors.firstColor,
-                    child: IconButton(
-                      padding: const EdgeInsets.all(0),
-                      onPressed: () {
-                        setState(() {
-                          initGame();
-                        });
-                      },
-                      icon: Icon(
-                        Icons.restart_alt,
-                        color: AppColors.secondColor,
-                        size: 40,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-
-                  // check
-                  ElevatedButton(
-                    onPressed: () {
-                      _showCheckWordDialog(wordsData.checkCorrectAnswer());
-                      if (wordsData.checkCorrectAnswer()) {
-                        // next word
-                        if (wordsData.canUpdateCurrentIndex()) {
-                          setState(() {
-                            wordsData.updateCurrentIndex();
-                            initGame();
-                          });
-                        } else {
-                          // all words are guessed
-                          _showWinDialog();
-                        }
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.firstColor,
-                      foregroundColor: AppColors.secondColor,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 23,
-                        vertical: 12,
-                      ),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
+                      // check
+                      ElevatedButton(
+                        onPressed: () {
+                          showCheckWordDialog(context, wordsData.checkCorrectAnswer());
+                          if (wordsData.checkCorrectAnswer()) {
+                            // next word
+                            if (wordsData.canUpdateCurrentIndex()) {
+                              setState(() {
+                                wordsData.updateCurrentIndex();
+                                initGame();
+                              });
+                            } else {
+                              // all words are guessed
+                              showWinDialog(context);
+                            }
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.firstColor,
+                          foregroundColor: AppColors.secondColor,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 23,
+                            vertical: 12,
+                          ),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                        ),
+                        child: const Text(
+                          'Проверить',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    child: const Text(
-                      'Проверить',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    ],
                   ),
                 ],
               ),
+              // Positioned.fill(
+              //   child: RiveAnimation.asset("assets/animation/check.riv",
+              //   onInit: (artboard) {
+              //     StateMachineController controller = getRiveController(artboard);
+              //     check = controller.findSMI("Check") as SMITrigger;
+              //     error = controller.findSMI("Error") as SMITrigger;
+              //     reset = controller.findSMI("Reset") as SMITrigger;
+              //   },),
+              // ),
             ],
           ),
         ),
