@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
 
+import 'package:word_composition/data.dart';
 import 'package:word_composition/screens/menu_screen.dart';
 import 'package:word_composition/style/colors.dart';
 
@@ -14,6 +16,7 @@ Future<Object?> WinDialog(BuildContext context, bool isShowConfetti) {
       Navigator.pop(context);
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => MenuScreen()));
+      Provider.of<Words>(context, listen: false).clearData();
     });
   }
 
@@ -99,7 +102,7 @@ Future<Object?> WinDialog(BuildContext context, bool isShowConfetti) {
                       ? Positioned.fill(
                           child: Column(
                             children: [
-                              Spacer(flex: 3),
+                              Spacer(flex: 2),
                               SizedBox(
                                 height: 120,
                                 width: 120,

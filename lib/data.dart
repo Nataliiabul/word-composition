@@ -12,8 +12,7 @@ class LetterItem {
 
 class Words with ChangeNotifier {
   int currentIndex = 0;
-  List words = ['музыка'];
-  // final String correctWord = 'музыка';
+  List words = ['музыка', 'радуга', 'котик'];
   List letters = [];
   List userLetters = [];
 

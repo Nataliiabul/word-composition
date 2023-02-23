@@ -42,6 +42,15 @@ class _MenuScreenState extends State<MenuScreen> {
               left: (width-200)/2,
               child: CircleAvatar(
                 backgroundColor: AppColors.firstColor,
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/img/words_logo.png", ),
+                      fit: BoxFit.scaleDown,
+                    )
+                  ),
+                ),
+                
                 radius: 100,
               ),
             ),
