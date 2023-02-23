@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:rive/rive.dart';
 
 import 'package:word_composition/screens/menu_screen.dart';
@@ -8,10 +9,12 @@ Future<Object?> WinDialog(BuildContext context, bool isShowConfetti) {
   SMITrigger? confetti;
 
   void toHome(BuildContext context) {
-    // Navigator.pop(context);
-    // Navigator.of(context)
-    //     .pushReplacement(MaterialPageRoute(builder: (context) => MenuScreen()));
     confetti!.fire();
+    Future.delayed(Duration(milliseconds: 1200), () {
+      Navigator.pop(context);
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => MenuScreen()));
+    });
   }
 
   StateMachineController getRiveController(Artboard artboard) {

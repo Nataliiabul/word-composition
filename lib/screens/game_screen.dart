@@ -6,11 +6,10 @@ import 'package:rive/rive.dart';
 import 'package:word_composition/data.dart';
 import 'package:word_composition/screens/menu_screen.dart';
 import 'package:word_composition/style/colors.dart';
-import 'package:word_composition/widgets/dialogs/show_check_word_dialog.dart';
+
 import 'package:word_composition/widgets/dialogs/show_to_home_dialog.dart';
-import 'package:word_composition/widgets/dialogs/show_win_dialog.dart';
 import 'package:word_composition/widgets/letter_container.dart';
-import 'package:word_composition/widgets/win.dart';
+import 'package:word_composition/widgets/dialogs/win_dialog.dart';
 
 class GameScreen extends StatefulWidget {
   static const routeName = '/game';
@@ -257,13 +256,7 @@ class _GameScreenState extends State<GameScreen> {
                                         initGame();
                                       });
                                     } else {
-                                      // all words are guessed
-
-                                      // setState(() {
-                                      //   isShowConfetti = true;
-                                      // });
-                                      
-
+                                    // all words are guessed
                                       WinDialog(context, true);
                                     }
                                   });
@@ -283,7 +276,7 @@ class _GameScreenState extends State<GameScreen> {
                               }
                             },
                           );
-                          // showCheckWordDialog(context, wordsData.checkCorrectAnswer());
+                    
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.firstColor,
@@ -337,35 +330,6 @@ class _GameScreenState extends State<GameScreen> {
                       ),
                     )
                   : SizedBox(),
-
-              // confetti
-              // isShowConfetti
-              //     ? Positioned.fill(
-              //         child: Column(
-              //           children: [
-              //             Spacer(flex: 3),
-              //             SizedBox(
-              //               height: 120,
-              //               width: 120,
-              //               child: Transform.scale(
-              //                 scale: 6,
-              //                 child: RiveAnimation.asset(
-              //                   "assets/animation/confetti.riv",
-              //                   onInit: (artboard) {
-              //                     StateMachineController controller =
-              //                         getRiveController(artboard);
-              //                     confetti =
-              //                         controller.findSMI("Trigger explosion")
-              //                             as SMITrigger;
-              //                   },
-              //                 ),
-              //               ),
-              //             ),
-              //             Spacer(flex: 1),
-              //           ],
-              //         ),
-              //       )
-              //     : SizedBox(),
             ],
           ),
         ),
