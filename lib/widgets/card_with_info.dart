@@ -25,7 +25,7 @@ class CardWithInfo extends StatelessWidget {
         height: height * 0.4,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(25),
           ),
           boxShadow: [
@@ -47,25 +47,18 @@ class CardWithInfo extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Text(
-              'У вас будет 5 минут, чтобы отгадать все слова. Для начала игры нажмите кнопку "старт"',
+              'Вам будет предложено несколько слов для отгадывания. Для начала игры нажмите кнопку "старт". Удачи!)',
               style: TextStyle(
                 fontSize: 17,
                 color: AppColors.mainColor,
               ),
               textAlign: TextAlign.justify,
             ),
-            Spacer(),
+            const Spacer(),
             ElevatedButton(
               onPressed: function,
-              child: Text(
-                "СТАРТ",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
               style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.mainColor,
                   foregroundColor: Colors.white,
@@ -73,6 +66,13 @@ class CardWithInfo extends StatelessWidget {
                       horizontal: 35, vertical: 10),
                   shape: StadiumBorder(),
                   shadowColor: AppColors.mainColor),
+              child: const Text(
+                "СТАРТ",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),

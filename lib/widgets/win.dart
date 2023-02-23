@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
 import 'package:word_composition/screens/menu_screen.dart';
+import 'package:word_composition/style/colors.dart';
 
 Future<Object?> WinDialog(BuildContext context, bool isShowConfetti) {
+  SMITrigger? confetti;
+
   void toHome(BuildContext context) {
-    Navigator.pop(context);
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => MenuScreen()));
+    // Navigator.pop(context);
+    // Navigator.of(context)
+    //     .pushReplacement(MaterialPageRoute(builder: (context) => MenuScreen()));
+    confetti!.fire();
   }
 
   StateMachineController getRiveController(Artboard artboard) {
@@ -16,12 +20,6 @@ Future<Object?> WinDialog(BuildContext context, bool isShowConfetti) {
     artboard.addController(controller!);
     return controller;
   }
-
-  SMITrigger? confetti;
-
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    //
-  });
 
   return showGeneralDialog(
     barrierDismissible: true,
@@ -37,7 +35,7 @@ Future<Object?> WinDialog(BuildContext context, bool isShowConfetti) {
           ),
           decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.98),
-              borderRadius: BorderRadius.all(Radius.circular(40))),
+              borderRadius: BorderRadius.all(Radius.circular(35))),
           child: Scaffold(
             backgroundColor: Colors.transparent,
             body: SingleChildScrollView(
@@ -45,25 +43,51 @@ Future<Object?> WinDialog(BuildContext context, bool isShowConfetti) {
                 children: [
                   // texts
                   Container(
-                    height: 300,
+                    height: 270,
                     child: Column(
                       children: [
-                        Text('Победа'),
+                        Text(
+                          '🎉',
+                          style: TextStyle(
+                            fontSize: 45,
+                          ),
+                        ),
                         SizedBox(height: 15),
                         Text(
-                          'текст текст текст текст текст',
+                          'Победа',
                           style: TextStyle(
-                            fontFamily: 'OpenSans',
-                            fontSize: 16,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        SizedBox(height: 15),
+                        Text(
+                          'Ееее. Поздравляю. Вы отгадали все слова!',
+                          style: TextStyle(
+                            fontSize: 17,
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(height: 15),
+                        Spacer(),
                         ElevatedButton(
-                            onPressed: () {
-                              toHome(context);
-                            },
-                            child: Text('to home'))
+                          onPressed: () {
+                            toHome(context);
+                          },
+                          child: Text(
+                            "В ГЛАВНОЕ МЕНЮ",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.mainColor,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 35, vertical: 10),
+                              shape: StadiumBorder(),
+                              shadowColor: AppColors.mainColor),
+                        ),
                       ],
                     ),
                   ),
@@ -77,7 +101,7 @@ Future<Object?> WinDialog(BuildContext context, bool isShowConfetti) {
                                 height: 120,
                                 width: 120,
                                 child: Transform.scale(
-                                  scale: 6,
+                                  scale: 7,
                                   child: RiveAnimation.asset(
                                     "assets/animation/confetti.riv",
                                     onInit: (artboard) {
