@@ -180,7 +180,8 @@ class _GameScreenState extends State<GameScreen> {
                       _isAccepting = false;
                     },
                     builder: ((context, candidateData, rejectedData) =>
-                        Container(
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
                           width: double.maxFinite,
                           height: 70,
                           decoration: BoxDecoration(
