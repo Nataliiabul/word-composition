@@ -62,8 +62,8 @@ class CardWithInfo extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.mainColor,
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 35, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
                   shape: StadiumBorder(),
                   shadowColor: AppColors.mainColor),
               child: const Text(

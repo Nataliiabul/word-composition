@@ -119,7 +119,7 @@ class _GameScreenState extends State<GameScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: height * 0.2),
+                  SizedBox(height: height * 0.15),
 
                   // draggable letters
                   Wrap(

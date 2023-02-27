@@ -65,7 +65,7 @@ Future<Object?> WinDialog(BuildContext context, bool isShowConfetti) {
                             fontSize: 25,
                             fontWeight: FontWeight.w700,
                           ),
-                        ),
+                                                 ),
                         SizedBox(height: 15),
                         Text(
                           'Ееее. Поздравляю. Вы отгадали все слова!',
@@ -85,6 +85,7 @@ Future<Object?> WinDialog(BuildContext context, bool isShowConfetti) {
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                           style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.mainColor,
